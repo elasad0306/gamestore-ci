@@ -33,28 +33,18 @@ jobs:
 
       - name: Installer les dépendances
         run: |
-          # TODO — pip install flask pytest pytest-cov pytest-html
           pip install flask pytest pytest-cov pytest-html
 
       - name: Lancer les tests unitaires
         run: |
-          # TODO — pytest tests/test_unit.py -v
-          #         --cov=app_gamestore
-          #         --cov-report=html:reports/coverage
-          #         --html=reports/unit_report.html
-          #         --self-contained-html
           mkdir -p reports
-          pytest tests/test_tp1_unit.py -v \
-          --cov=app_gamestore --cov-report=html:reports/coverage \
-          --html=reports/unit_report.html --self-contained-html
+          pytest tests/test_tp1_unit.py -v --cov=app_gamestore --cov-report=html:reports/coverage --html=reports/unit_report.html --self-contained-html
 
       - name: Uploader les rapports
         uses: actions/upload-artifact@v4
         with:
           name: unit-reports
           path: |
-            # TODO — reports/coverage/
-            # TODO — reports/unit_report.html
             reports/coverage/
             reports/unit_report.html
 
@@ -63,7 +53,7 @@ jobs:
   newman-tests:
     name: Tests API Newman
     runs-on: ubuntu-latest
-    needs: unit-tests           # ← attend la fin de unit-tests
+    needs: unit-tests
 
     steps:
       - name: Récupérer le code
@@ -81,37 +71,25 @@ jobs:
 
       - name: Installer Newman
         run: |
-          # TODO — npm install -g newman newman-reporter-htmlextra
           npm install -g newman newman-reporter-htmlextra
 
       - name: Démarrer l'API GameStore
         run: |
           pip install flask
-          # TODO — démarrer app_gamestore.py en arrière-plan (&)
-          # TODO — attendre que Flask soit prêt (sleep 2)
-          # TODO — vérifier avec curl http://localhost:5000/health
           python app_gamestore.py &
           sleep 2
           curl --retry 5 --retry-delay 1 http://localhost:5000/health
 
       - name: Lancer la collection Newman
         run: |
-          # TODO — newman run tests/collection_gamestore_j5.json
-          #         --env-var "base_url=http://localhost:5000"
-          #         --reporters cli,htmlextra
-          #         --reporter-htmlextra-export reports/newman_report.html
           mkdir -p reports
-          newman run tests/collection_gamestore_j5.json \
-          --env-var "base_url=http://localhost:5000" \
-          --reporters cli,htmlextra \
-          --reporter-htmlextra-export reports/newman_report.html
+          newman run tests/collection_gamestore_j5.json --env-var "base_url=http://localhost:5000" --reporters cli,htmlextra --reporter-htmlextra-export reports/newman_report.html
 
       - name: Uploader le rapport Newman
         uses: actions/upload-artifact@v4
         with:
           name: newman-report
           path: |
-            # TODO — reports/newman_report.html
             reports/newman_report.html
 
   # ── JOB 3 : Tests UI Playwright ─────────────────────────────────────────
@@ -119,7 +97,7 @@ jobs:
   playwright-tests:
     name: Tests UI Playwright
     runs-on: ubuntu-latest
-    needs: [unit-tests, newman-tests]   # ← attend les deux
+    needs: [unit-tests, newman-tests]
 
     steps:
       - name: Récupérer le code
@@ -132,39 +110,26 @@ jobs:
 
       - name: Installer Playwright
         run: |
-          # TODO — pip install flask playwright pytest-playwright
-          # TODO — playwright install chromium --with-deps
           pip install flask playwright pytest-playwright
           playwright install chromium --with-deps
-          pip install flask playwright pytest-playwright
-          playwright install chromium --with-deps
-          
 
       - name: Démarrer l'API GameStore
         run: |
           pip install flask
-          # TODO — même chose que dans le job newman
           python app_gamestore.py &
           sleep 2
           curl --retry 5 --retry-delay 1 http://localhost:5000/health
 
       - name: Lancer les tests UI
         run: |
-          # TODO — pytest tests/test_playwright_j5.py -v
-          #         --html=reports/playwright_report.html
-          #         --self-contained-html
-          mkdir -p reports
-          pytest tests/test_playwright_j5.py -v \
-          --html=reports/playwright_report.html \
-          --self-contained-html
+          mkdir -p reports screenshots
+          pytest tests/test_playwright_j5.py -v --html=reports/playwright_report.html --self-contained-html
 
       - name: Uploader screenshots et rapport
-        if: always()    # uploader MÊME si les tests échouent
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-reports
           path: |
-            # TODO — reports/playwright_report.html
-            # TODO — screenshots/
             reports/playwright_report.html
             screenshots/
