@@ -136,6 +136,9 @@ jobs:
           # TODO — playwright install chromium --with-deps
           pip install flask playwright pytest-playwright
           playwright install chromium --with-deps
+          pip install flask playwright pytest-playwright
+          playwright install chromium --with-deps
+          
 
       - name: Démarrer l'API GameStore
         run: |
