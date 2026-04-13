@@ -44,7 +44,7 @@ jobs:
           #         --html=reports/unit_report.html
           #         --self-contained-html
           mkdir -p reports
-          pytest tests/test_unit.py -v \
+          pytest tests/test_tp1_unit.py -v \
           --cov=app_gamestore --cov-report=html:reports/coverage \
           --html=reports/unit_report.html --self-contained-html
 
