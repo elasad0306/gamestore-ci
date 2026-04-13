@@ -1,3 +1,4 @@
+import pytest
 # ── conftest.py (à créer dans tests/) ────────────────────────────────────────
 # Décommente et place dans tests/conftest.py pour activer les screenshots auto :
 @pytest.fixture(autouse=True)
