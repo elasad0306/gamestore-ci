@@ -361,7 +361,39 @@ def list_genres():
     db = get_db()
     rows = db.execute('SELECT DISTINCT genre FROM games ORDER BY genre').fetchall()
     return jsonify([r['genre'] for r in rows]), 200
+@app.route("/games/featured")
+def featured_games():
+    """
+    Retourne les jeux mis en avant.
 
+    Réponse :
+    {
+      "count": <nombre de jeux retournés>,
+      "featured": [<jeux triés par rating décroissant>]
+    }
+
+    Un paramètre optionnel ?limit=<n> est accepté, borné entre 1 et 5.
+    """
+    db = get_db()
+
+    try:
+        limit = int(request.args.get("limit", 5))
+    except (TypeError, ValueError):
+        limit = 5
+
+    limit = max(1, min(limit, 5))
+
+    rows = db.execute(
+        """
+        SELECT * FROM games
+        ORDER BY rating DESC, id ASC
+        LIMIT ?
+        """,
+        (limit,),
+    ).fetchall()
+
+    featured = [row_to_dict(r) for r in rows]
+    return jsonify({"count": len(featured), "featured": featured}), 200
 
 # ── Interface HTML ────────────────────────────────────────────────────────────
 
