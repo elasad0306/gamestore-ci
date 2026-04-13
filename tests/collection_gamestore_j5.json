@@ -1,0 +1,818 @@
+{
+  "info": {
+    "_postman_id": "6c1ec5a9-11c6-45f1-9c02-9de38d607a62",
+    "name": "GameStore API — J5",
+    "description": "Collection de tests API pour le TP J5.\nStructure par dossiers fonctionnels.\nComplétez les requêtes et les assertions dans l'ordre des dossiers.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "47541960",
+    "_collection_link": "https://go.postman.co/collection/47541960-6c1ec5a9-11c6-45f1-9c02-9de38d607a62?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "01 — Health & Sanity",
+      "item": [
+        {
+          "name": "Health check",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO 1 — Vérifier que le status est 200",
+                  "pm.test('Status 200', () => {",
+                  "    pm.response.to.have.status(200)",
+                  "});",
+                  "",
+                  "// TODO 2 — Vérifier que status == 'ok' dans le body",
+                  "pm.test('Status ok', () => {",
+                  "    const body = pm.response.json();",
+                  "   ",
+                  "   pm.expect(body.status).to.eql(\"ok\")",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Lister les genres",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO — Status 200 + réponse est un tableau non vide",
+                  "pm.test('Genres disponibles', () => {",
+                  "    pm.response.to.have.status(200)",
+                  "   ",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/genres",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "genres"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Vérifier que l'API répond avant de commencer."
+    },
+    {
+      "name": "02 — Games CRUD",
+      "item": [
+        {
+          "name": "Lister tous les jeux",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO 1 — Status 200",
+                  "pm.test(\"Status de reponse 2OO\", function(){",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "// TODO 2 — Réponse est un tableau",
+                  "pm.test(\"La réponse est un tableua\", function(){",
+                  "    const games = pm.response.json()",
+                  "",
+                  "    pm.expect(games).to.be.an('array')",
+                  "})",
+                  "// TODO 3 — Tableau contient au moins 1 élément",
+                  "pm.test(\"Le tableau contient au moins un jeu\", function () {",
+                  "    const games = pm.response.json()",
+                  "    ",
+                  "    pm.expect(games).to.be.an('array').and.not.empty",
+                  "})",
+                  "// TODO 4 — Chaque jeu a les champs : id, title, genre, price, rating",
+                  "pm.test(\"Chaque jeu possède tous les champs obligatoires\", function () {",
+                  "    const games = pm.response.json()",
+                  "",
+                  "    games.forEach((game) => {",
+                  "        pm.expect(game).to.have.all.keys('id', 'title', 'genre', 'price', 'rating');",
+                  "    })",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/games",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Créer un jeu",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO 1 — Status 201",
+                  "pm.test(\"Status de réponse 200\", function () {",
+                  "    pm.response.to.have.status(201)",
+                  "})",
+                  "const id = pm.response.json().id",
+                  "// TODO 2 — Récupérer l'id et le sauvegarder pour le chaînage",
+                  "pm.collectionVariables.set('created_game_id', id)",
+                  "// Indice : pm.collectionVariables.set('created_game_id', ...)",
+                  "",
+                  "// TODO 3 — Vérifier que le titre dans la réponse correspond au body envoyé",
+                  "pm.test(\"Vérifier le test\", function(){",
+                  "    const game = pm.response.json()",
+                  "",
+                  "    const bodyRequest = JSON.parse(pm.request.body.raw)",
+                  "",
+                  "    pm.expect(game.title).to.eql(bodyRequest.title)",
+                  "    ",
+                  "})",
+                  "// TODO 4 — Vérifier que le prix est bien 29.99",
+                  "pm.test(\"Le prix est bien 29.99\", function () {",
+                  "    const game = pm.response.json()",
+                  "    pm.expect(game.price).to.eql(29.99)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Zelda {{$timestamp}}\",\n  \"genre\": \"RPG\",\n  \"price\": 29.99,\n  \"rating\": 4.2,\n  \"stock\": 50\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/games",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Lire le jeu créé",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO 1 — Status 200",
+                  "pm.test('Status de réponse 200', function(){",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "// TODO 2 — L'id retourné correspond à created_game_id",
+                  "// Indice : pm.collectionVariables.get('created_game_id')",
+                  "pm.test(\"Vérifier l'id du jeu crée\", function(){",
+                  "    const game = pm.response.json()",
+                  "",
+                  "    pm.expect(game.id).to.eql(pm.collectionVariables.get('created_game_id'))",
+                  "})",
+                  "",
+                  "// TODO 3 — Le genre est 'RPG'",
+                  "pm.test(\"Vérifier le genre du jeu crée\", function(){",
+                  "    const game = pm.response.json()",
+                  "    ",
+                  "    pm.expect(game.genre).to.eql('RPG')",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/games/{{created_game_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games",
+                "{{created_game_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mettre à jour le stock",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO 1 — Status 200",
+                  "pm.test(\"Status réponse 200\", function(){",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "// TODO 2 — Le stock dans la réponse est bien 0",
+                  "pm.test(\"Vérifier si stock 0\", function(){",
+                  "    const game = pm.response.json()",
+                  "",
+                  "    pm.expect(game.stock).to.eql(0)",
+                  "",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stock\": 0\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/games/{{created_game_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games",
+                "{{created_game_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Supprimer le jeu",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO — Status 204\r",
+                  "pm.test(\"Status réponse 204\", function(){\r",
+                  "    pm.response.to.have.status(204)\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/games/{{created_game_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games",
+                "{{created_game_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Vérifier la suppression (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO — Status 404 : le jeu n'existe plus",
+                  "// C'est la fin du cycle CRUD complet",
+                  "pm.test(\"Status réponse 404\", function(){",
+                  "    pm.response.to.have.status(404)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/games/{{created_game_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games",
+                "{{created_game_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Créer, lire, mettre à jour, supprimer un jeu.\nLe chaînage récupère l'id créé et l'utilise dans les requêtes suivantes."
+    },
+    {
+      "name": "03 — Recherche & Filtres",
+      "item": [
+        {
+          "name": "Filtrer par genre RPG",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO 1 — Status 200",
+                  "pm.test(\"Statut 200\", function(){",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "// TODO 2 — Tous les jeux retournés ont genre == 'RPG'",
+                  "// Indice : utilisez .forEach() sur le tableau",
+                  "pm. test(\"Tous les genre du genre RPG\", function(){",
+                  "    const games = pm.response.json()",
+                  "",
+                  "    games.forEach((game) =>{",
+                  "        pm.expect(game.genre).to.eql(\"RPG\")",
+                  "    })",
+                  "})",
+                  "",
+                  "",
+                  "// TODO 3 — Temps de réponse < 500ms",
+                  "// Indice : pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "",
+                  "pm.test(\"Temp de réponse < 500 ms\", function(){",
+                  "    pm.expect(pm.response.responseTime).to.below(500)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/games?genre=RPG",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games"
+              ],
+              "query": [
+                {
+                  "key": "genre",
+                  "value": "RPG"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Trier par prix croissant",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO 1 — Status 200",
+                  "pm.test(\"Statut 200\", function(){",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "// TODO 2 — Le premier jeu a un prix <= au dernier jeu",
+                  "const games = pm.response.json();",
+                  "",
+                  "pm.test(\"Premier jeu à un prix <= au dernier jeu\", function(){",
+                  "    first_game = games[0]",
+                  "",
+                  "    last_game = games[games.length - 1]",
+                  "",
+                  "    pm.expect(first_game.price).to.be.at.most(last_game.price)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/games?sort=price&order=asc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games"
+              ],
+              "query": [
+                {
+                  "key": "sort",
+                  "value": "price"
+                },
+                {
+                  "key": "order",
+                  "value": "asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Genre inexistant → liste vide",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO — Status 200 + tableau vide\r",
+                  "pm.test(\"Statut 200\", function(){\r",
+                  "    pm.response.to.have.status(200)\r",
+                  "\r",
+                  "    games = pm.response.json()\r",
+                  "\r",
+                  "    if (games.length === 0){\r",
+                  "        console.log(\"Genre de jeux introuvables\")\r",
+                  "    }else {\r",
+                  "        console.log(games.length + \"du jeux du genre\")\r",
+                  "    }\r",
+                  "\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/games?genre=GenreQuiNExistePas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games"
+              ],
+              "query": [
+                {
+                  "key": "genre",
+                  "value": "GenreQuiNExistePas"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Tester les fonctionnalités de recherche et de filtrage."
+    },
+    {
+      "name": "04 — Cas d'erreur",
+      "item": [
+        {
+          "name": "Créer sans titre → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO — Status 400 + message d'erreur présent dans le body\r",
+                  "pm.test(\"Status de réponse 400\", function(){\r",
+                  "    pm.response.to.have.status(400)\r",
+                  "\r",
+                  "    const games = pm.response.json()\r",
+                  "\r",
+                  "    pm.expect(games.error).to.be.a('string').and.not.empty\r",
+                  "\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"genre\": \"RPG\",\n  \"price\": 9.99\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/games",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Créer avec prix négatif → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO — Status 400\r",
+                  "\r",
+                  "pm.test(\"Status de réponse 400 \", function(){\r",
+                  "    pm.response.to.have.status(400)\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Jeu invalide\",\n  \"genre\": \"RPG\",\n  \"price\": -10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/games",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Jeu inexistant → 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO — Status 404\r",
+                  "pm.test(\"Status de réponse 404\", function(){\r",
+                  "    pm.response.to.have.status(404)\r",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/games/99999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games",
+                "99999"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Valider le comportement de l'API face à des données invalides."
+    },
+    {
+      "name": "05 — Featured (NGS-108)",
+      "item": [
+        {
+          "name": "Featured — réponse de base",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO 1 — Status 200",
+                  "pm.test(\"Le statut est 200 OK\", function () {",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "const data = pm.response.json()",
+                  "",
+                  "// TODO 2 — Réponse contient 'count' et 'featured'",
+                  "pm.test(\"La réponse contient les champs 'count' et 'featured'\", function () {",
+                  "    pm.expect(data).to.have.property('count')",
+                  "    pm.expect(data).to.have.property('featured')",
+                  "})",
+                  "",
+                  "// TODO 3 — 'featured' est un tableau de max 5 éléments",
+                  "pm.test(\"'featured' est un tableau de maximum 5 éléments\", function () {",
+                  "    pm.expect(data.featured).to.be.an('array')",
+                  "    pm.expect(data.featured.length).to.be.at.most(5)",
+                  "})",
+                  "",
+                  "// TODO 4 — Les jeux sont triés par rating décroissant",
+                  "pm.test(\"Les jeux sont triés par rating décroissant\", function () {",
+                  "    const featuredGames = data.featured",
+                  "    ",
+                  "    featuredGames.forEach((game, index) => {",
+                  "",
+                  "        if (index < featuredGames.length - 1) {",
+                  "            const currentRating = game.rating;",
+                  "            const nextRating = featuredGames[index + 1].rating",
+                  "",
+                  "",
+                  "            pm.expect(currentRating).to.be.at.least(nextRating, ",
+                  "                `Erreur à l'index ${index}: ${currentRating} devrait être >= ${nextRating}`)",
+                  "        }",
+                  "    })",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/games/featured",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games",
+                "featured"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Featured — limit=3",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TODO — Max 3 jeux retournés",
+                  "pm.test(\"La réponse contient au maximum 3 jeux\", function () {",
+                  "    const games = pm.response.json();",
+                  "    ",
+                  "    if (games.length == 3){",
+                  "        console.log(\"Valid\")",
+                  "    }",
+                  "});",
+                  "// TODO — Aucun jeu gratuit (price == 0) dans les résultats",
+                  "pm.test(\"Aucun jeu n'est gratuit\", function () {",
+                  "    pm.response.json().forEach(game => {",
+                  "        pm.expect(game.price).to.be.a('number');",
+                  "        pm.expect(game.price).to.be.above(0);",
+                  "    });",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/games?limit=3",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "games"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Tester l'endpoint /games/featured.\nLisez la documentation avant d'écrire les assertions."
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "description": "URL de base — ne jamais écrire l'URL en dur dans les requêtes"
+    },
+    {
+      "key": "created_game_id",
+      "value": "",
+      "description": "Rempli automatiquement par le test de création (chaînage)"
+    }
+  ]
+}
