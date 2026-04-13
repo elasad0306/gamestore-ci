@@ -123,7 +123,7 @@ jobs:
       - name: Lancer les tests UI
         run: |
           mkdir -p reports screenshots
-          pytest tests/test_playwright_j5.py -v --html reports/playwright_report.html --self-contained-html
+          pytest tests/test_playwright_j5.py -v --html=reports/playwright_report.html --self-contained-html
 
       - name: Uploader screenshots et rapport
         if: always()
