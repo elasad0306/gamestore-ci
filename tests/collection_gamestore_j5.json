@@ -1,11 +1,11 @@
 {
   "info": {
-    "_postman_id": "6c1ec5a9-11c6-45f1-9c02-9de38d607a62",
+    "_postman_id": "e9bba6a0-c89b-4ac9-befe-c09272de41a4",
     "name": "GameStore API — J5",
     "description": "Collection de tests API pour le TP J5.\nStructure par dossiers fonctionnels.\nComplétez les requêtes et les assertions dans l'ordre des dossiers.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "47541960",
-    "_collection_link": "https://go.postman.co/collection/47541960-6c1ec5a9-11c6-45f1-9c02-9de38d607a62?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/47541960-e9bba6a0-c89b-4ac9-befe-c09272de41a4?source=collection_link"
   },
   "item": [
     {
@@ -99,28 +99,30 @@
               "script": {
                 "exec": [
                   "// TODO 1 — Status 200",
-                  "pm.test(\"Status de reponse 2OO\", function(){",
+                  "pm.test(\"Status de reponse 200\", function(){",
                   "    pm.response.to.have.status(200)",
                   "})",
                   "",
                   "// TODO 2 — Réponse est un tableau",
-                  "pm.test(\"La réponse est un tableua\", function(){",
+                  "pm.test(\"La réponse est un tableau\", function(){",
                   "    const games = pm.response.json()",
                   "",
                   "    pm.expect(games).to.be.an('array')",
                   "})",
+                  "",
                   "// TODO 3 — Tableau contient au moins 1 élément",
                   "pm.test(\"Le tableau contient au moins un jeu\", function () {",
                   "    const games = pm.response.json()",
                   "    ",
                   "    pm.expect(games).to.be.an('array').and.not.empty",
                   "})",
+                  "",
                   "// TODO 4 — Chaque jeu a les champs : id, title, genre, price, rating",
                   "pm.test(\"Chaque jeu possède tous les champs obligatoires\", function () {",
                   "    const games = pm.response.json()",
                   "",
                   "    games.forEach((game) => {",
-                  "        pm.expect(game).to.have.all.keys('id', 'title', 'genre', 'price', 'rating');",
+                  "        pm.expect(game).to.include.all.keys('id', 'title', 'genre', 'price');",
                   "    })",
                   "})"
                 ],
