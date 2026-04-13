@@ -717,6 +717,7 @@
                   "",
                   "// TODO 4 — Les jeux sont triés par rating décroissant",
                   "pm.test(\"Les jeux sont triés par rating décroissant\", function () {",
+                  "    const data = pm.response.json()",
                   "    const featuredGames = data.featured",
                   "    ",
                   "    featuredGames.forEach((game, index) => {",
