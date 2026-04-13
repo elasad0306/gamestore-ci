@@ -11,29 +11,21 @@ class AddGameModal:
     def __init__(self, page: Page):
         self.page = page
 
-        # TODO — Définir les locators du formulaire
-        #
-        # self.modal        = page.locator("...")  # le modal entier
-        # self.input_title  = page.locator("...")  # champ titre
-        # self.input_genre  = page.locator("...")  # champ genre
-        # self.input_price  = page.locator("...")  # champ prix
-        # self.submit_btn   = page.locator("...")  # bouton Ajouter
-        # self.cancel_btn   = page.locator("...")  # bouton Annuler
+        self.modal        = page.locator("[data-testid=add-game-modal]")
+        self.input_title  = page.locator("[data-testid=modal-title]")
+        self.input_genre  = page.locator("[data-testid=modal-genre]")
+        self.input_price  = page.locator("[data-testid=modal-price]")
+        self.submit_btn   = page.locator("[data-testid=modal-submit]")
+        self.cancel_btn   = page.locator("[data-testid=modal-cancel]")
 
     def fill_and_submit(self, title: str, genre: str, price: float):
-        """
-        TODO — Remplir le formulaire et soumettre.
-        1. self.input_title.fill(title)
-        2. self.input_genre.fill(genre)
-        3. self.input_price.fill(str(price))
-        4. self.submit_btn.click()
-        """
-        pass
+        self.input_title.fill(title)
+        self.input_genre.fill(genre)
+        self.input_price.fill(str(price))
+        self.submit_btn.click()
 
     def cancel(self):
-        """TODO — self.cancel_btn.click()"""
-        pass
+        self.cancel_btn.click()
 
     def is_visible(self) -> bool:
-        """TODO — return self.modal.is_visible()"""
-        pass
+        return self.modal.is_visible()
