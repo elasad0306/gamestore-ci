@@ -1,7 +1,7 @@
 import pytest
 # ── conftest.py (à créer dans tests/) ────────────────────────────────────────
 # Décommente et place dans tests/conftest.py pour activer les screenshots auto :
-@pytest.fixture(autouse=False)
+@pytest.fixture(autouse=True)
 def screenshot_on_fail(page, request):
     yield
     if hasattr(request.node, 'rep_call') and request.node.rep_call.failed:
