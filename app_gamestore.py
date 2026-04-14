@@ -395,6 +395,7 @@ def featured_games():
     featured = [row_to_dict(r) for r in rows]
     return jsonify({"count": len(featured), "featured": featured}), 200
 
+
 # ── Interface HTML ────────────────────────────────────────────────────────────
 
 HTML_TEMPLATE = '''<!DOCTYPE html>
@@ -924,7 +925,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
       });
       const data = await res.json();
       if (!res.ok) {
-        showToast(data.error || 'Erreur lors de l\'ajout', true);
+        showToast(data.error || 'Erreur lors de lajout', true);
         return;
       }
       allGames.unshift(data);
